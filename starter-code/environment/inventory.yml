@@ -1,0 +1,7 @@
+---
+all:
+  hosts:
+    app:
+      ansible_host: development.local
+    db:
+      ansible_host: database.local
