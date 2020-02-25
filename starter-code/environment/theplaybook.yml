@@ -30,6 +30,9 @@
         url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
         state: present
 
+    - name: install software properties common
+      shell: apt-get install software-properties-common -y
+
     - name: Install the nodejs LTS repos
       apt_repository:
         repo: "deb https://deb.nodesource.com/node_12.x {{ ansible_distribution_release }} main"
@@ -51,6 +54,18 @@
     - name: adding variable
       shell: echo "export DB_HOST=mongodb://192.168.10.150:27017/posts" >> /home/vagrant/.bashrc
 
+    - name: rm config of db
+      shell: rm /etc/nginx/sites-available/default
+
+    - name: unlink files
+      shell: unlink /etc/nginx/sites-enabled/default
+
+    - name: change location of config for nginex
+      shell: ln -s /home/ubuntu/environment/default.conf /etc/nginx/sites-enabled
+
+    - name: restart Nginx
+      shell: systemctl restart nginx
+
 
 
 - name: stuff for the database
@@ -63,6 +78,11 @@
       apt_key:
         url: https://www.mongodb.org/static/pgp/server-4.2.asc
         state: present
+
+    - name: get update
+      apt:
+        upgrade: yes
+        update_cache: yes
 
     - name: MongoDB - Add repository
       apt_repository:
@@ -77,5 +97,14 @@
         state: present
         update_cache: yes
 
-    - name: changing the config on db
-      shell: rm /etc/mongod.conf; ln -s /home/ubuntu/environment/db/mongod.conf /etc/mongod.conf; systemctl restart mongod; systemctl enable mongod
+    - name: rm config of db
+      shell: rm /etc/mongod.conf
+
+    - name: change location of config
+      shell: ln -s /home/ubuntu/environment/db/mongod.conf /etc/mongod.conf
+
+    - name: start MongoDB
+      shell: systemctl start mongod
+
+    - name: restart MongoDB
+      shell: systemctl restart mongod; systemctl enable mongod
