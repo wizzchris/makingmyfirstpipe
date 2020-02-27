@@ -1,16 +1,17 @@
 # Environment Variables Lab
 
 ## Timings
+changing to see if it works
 
 45 - 60 Minutes
 
 ## Summary
 
-We know how to set environment variables and how to persist them between logins by adding them to the bashrc file. 
+We know how to set environment variables and how to persist them between logins by adding them to the bashrc file.
 
 But we're using Vagrant to automatically create environments and we don't want the developers to have to do this manually.
 
-We need to use an environment variable to tell the app the location of the database running on the db VM. 
+We need to use an environment variable to tell the app the location of the database running on the db VM.
 
 ```
 mongodb://192.168.10.150:27017/posts
